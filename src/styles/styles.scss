@@ -79,11 +79,11 @@ html {
   cursor: pointer;
 
   &:hover {
-    background-color: rgba($theme, 0.75);
+    background-color: rgba($theme, 0.87);
   }
 
   &:active {
-    background-color: rgba($theme, 0.5);
+    background-color: rgba($theme, 0.7);
   }
 }
 
@@ -151,13 +151,21 @@ html {
   @include btn_outline;
 }
 
+.btn-green {
+  @include btn_default($green-600);
+  color: #fff;
+}
+
 .btn-green-outline {
-  @include btn_default($green-500);
   @include btn_outline($green-500);
 }
 
-.btn-orange-outline {
-  @include btn_default($orange-600);
+.btn-amber {
+  @include btn_default($amber-500);
+  color: #fff;
+}
+
+.btn-amber-outline {
   @include btn_outline($orange-600);
 }
 
@@ -195,5 +203,41 @@ html {
 
   .content-container {
     padding: 1rem;
+  }
+}
+
+.input-group {
+  @include flex_center(column, flex-start);
+  width: 100%;
+  gap: 0.5rem;
+  background-color: rgb(var(--gray-900));
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(var(--gray-600), 0.2);
+  margin-block: 1rem;
+  padding: 0;
+
+  input {
+    width: 100%;
+    font-size: 1.8rem;
+    padding: 1rem;
+    border: 0.1rem solid rgb(var(--gray-400));
+    border-radius: 0.25rem;
+    background-color: transparent;
+    color: rgb(var(--gray-50));
+    transition: border-color 0.15s;
+
+    &:focus {
+      outline: none;
+      border-color: $indigo-700;
+    }
+  }
+
+  label {
+    width: 100%;
+    font-size: 1.6rem;
+    color: rgb(var(--gray-200));
+    font-weight: 500;
+    display: block;
+    text-align: left;
   }
 }

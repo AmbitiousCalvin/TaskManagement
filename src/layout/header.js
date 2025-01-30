@@ -6,6 +6,36 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useLayoutContext } from "../contexts/layoutContext";
 
+function Header() {
+  return (
+    <header className="header">
+      <MenuToggleButton />
+      <HeaderSection />
+    </header>
+  );
+}
+
+const memoizedHeader = memo(Header);
+export { memoizedHeader as Header };
+
+// LogoContainer: You Can Customize Your Brand Name and BrandIcon
+
+const LogoContainer = memo(function ({ brand, brandIcon }) {
+  return (
+    <div
+      className="logo-container"
+      role="img"
+      aria-label={brand ?? "Dashboard"}
+    >
+      {!brandIcon && <i className="fa-brands fa-sellsy" />}
+      {brandIcon}
+      <span className="brand-name">{brand ?? "Dashboard"}</span>
+    </div>
+  );
+});
+
+// Menu Icon: You Can Customize Your Menu Icon Apperance
+
 const MenuToggleButton = memo(function () {
   const {
     isMiniMode,
@@ -24,7 +54,11 @@ const MenuToggleButton = memo(function () {
   };
 
   return (
-    <button className="icon-btn menu-icon" onClick={handleClick}>
+    <button
+      className="icon-btn menu-icon"
+      onClick={handleClick}
+      aria-label={isMiniMode && !isMobile ? "Open Menu" : "Close Menu"}
+    >
       {isMiniMode && !isMobile && <MenuIcon />}
       {isMobile && !isMobileMiniMode && <MenuIcon />}
       {!isMiniMode && !isMobile && <MenuOpenIcon />}
@@ -33,6 +67,7 @@ const MenuToggleButton = memo(function () {
   );
 });
 
+// ========================
 const HeaderSection = memo(function () {
   const [darkMode, setDarkMode] = useDarkMode();
   const [isOpen, toggleSearchBar] = useToggle(false);
@@ -47,19 +82,28 @@ const HeaderSection = memo(function () {
 
   return (
     <>
-      <div className="logo-container">
-        <i className="fa-brands fa-sellsy"></i>
-        <span className="brand-name">Dashboard</span>
-      </div>
+      <LogoContainer />
 
-      <section>
-        {isOpen && (
-          <button className="icon-btn voice-search-icon">
-            <i className="fa fa-microphone"></i>
-          </button>
-        )}
+      <section role="region" aria-labelledby="header-section">
+        <button className="btn" aria-label="Sign up">
+          Sign up
+        </button>
 
-        <form
+        <button
+          className="icon-btn theme-icon"
+          onClick={() => setDarkMode(!darkMode)}
+          aria-label="Toggle Dark Mode"
+        >
+          {!darkMode && <i className="fa fa-moon"></i>}
+          {darkMode && <i className="fa fa-sun"></i>}
+        </button>
+      </section>
+    </>
+  );
+});
+
+{
+  /* <form
           className={`search-bar-container ${isOpen && "show"}`}
           onClick={() => inputRef.current?.focus()}
         >
@@ -70,9 +114,11 @@ const HeaderSection = memo(function () {
             className="search-bar"
           />
           <i className="fa fa-search icon-btn"></i>
-        </form>
+        </form> */
+}
 
-        {!isOpen && (
+{
+  /* {!isOpen && (
           <button className="icon-btn search-toggle-icon" onClick={handleClick}>
             <i className="fa fa-search"></i>
           </button>
@@ -82,28 +128,5 @@ const HeaderSection = memo(function () {
           <button className="icon-btn close-search-icon" onClick={handleClick}>
             <i className="fa fa-angle-left"></i>
           </button>
-        )}
-
-        <button
-          className="icon-btn theme-icon"
-          onClick={() => setDarkMode(!darkMode)}
-        >
-          {!darkMode && <i className="fa fa-moon"></i>}
-          {darkMode && <i className="fa fa-sun"></i>}
-        </button>
-      </section>
-    </>
-  );
-});
-
-function Header() {
-  return (
-    <header className="header">
-      <MenuToggleButton />
-      <HeaderSection />
-    </header>
-  );
+        )} */
 }
-
-const memoizedHeader = memo(Header);
-export { memoizedHeader as Header };
