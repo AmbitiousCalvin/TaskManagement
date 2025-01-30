@@ -3,130 +3,134 @@ import { useLocalStorage } from "../hooks/useStorage";
 import useToggle from "../hooks/useToggle";
 
 export function TaskPage() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useLocalStorage("items", []);
+  const [category, setCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filter, setFilter] = useState("All");
-  const [showModal, setShowModal] = useState(false); // Modal visibility
+  const [showModal, setShowModal] = useToggle(false);
   const [newTask, setNewTask] = useState({ title: "", content: "" });
 
-  // Load tasks from localStorage
-  useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(savedTasks);
-  }, []);
-
-  // Filter tasks based on the selected category and search query
-  const filteredTasks = tasks
-    .filter((task) => {
-      if (filter === "All") return true;
-      return task.status === filter;
-    })
-    .filter((task) => {
-      return task.title.toLowerCase().includes(searchQuery.toLowerCase());
+  const handleTaskUpdate = (newTask) => {
+    setTasks((prevTasks) => {
+      return prevTasks.map((task) => (task.id === newTask.id ? newTask : task));
     });
-
-  // Update localStorage when tasks are modified
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
-
-  const handleCheckChange = (taskId) => {
-    setTasks(
-      tasks.map((task) => (task.id === taskId ? { ...task, status: task.status === "Pending" ? "Finished" : "Pending" } : task))
-    );
   };
 
-  const handleDelete = (taskId) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+  const handleTaskDelete = (id) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const handleEdit = (taskId) => {
-    const taskToEdit = tasks.find((task) => task.id === taskId);
-    console.log("Edit Task:", taskToEdit);
-  };
-
-  // Add new task
   const handleAddTask = (e) => {
     e.preventDefault();
-    if (newTask.title.trim() && newTask.content.trim()) {
-      const newTaskObj = {
-        id: Date.now(),
-        title: newTask.title,
-        content: newTask.content,
-        status: "Pending",
-      };
-      setTasks([...tasks, newTaskObj]);
-      setNewTask({ title: "", content: "" });
-      setShowModal(false); // Close modal after adding task
-    }
+    setTasks((prevTasks) => {
+      return [
+        ...prevTasks,
+        { ...newTask, id: crypto.randomUUID(), status: false },
+      ];
+    });
+    setNewTask({ title: "", content: "" });
   };
 
   return (
-    <div className="task-page">
-      <header className="task-header">
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search tasks..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <div className="categories">
-          <button onClick={() => setFilter("All")}>All</button>
-          <button onClick={() => setFilter("Finished")}>Finished</button>
-          <button onClick={() => setFilter("Pending")}>Pending</button>
-        </div>
-        <button className="add-task-btn" onClick={() => setShowModal(true)}>
-          Add Task
+    <>
+      <h1>Task Page</h1>
+      <header>
+        <button className="btn" onClick={() => setCategory("All")}>
+          All
         </button>
+        <button
+          className="btn btn-orange-outline"
+          onClick={() => setCategory(false)}
+        >
+          Pending
+        </button>
+        <button
+          className="btn btn-green-outline"
+          onClick={() => setCategory(true)}
+        >
+          Finished
+        </button>
+        <form className={`search-bar-container`}>
+          <input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            type="text"
+            placeholder="Filter tasks..."
+            className="search-bar"
+          />
+          <i className="fa fa-search icon-btn"></i>
+        </form>
+        <button className="btn">Add Task</button>
       </header>
 
-      <div className="task-grid">
-        {filteredTasks.map((task) => (
-          <div key={task.id} className="task-card">
-            <div className="task-checkbox">
-              <input type="checkbox" checked={task.status === "Finished"} onChange={() => handleCheckChange(task.id)} />
-            </div>
-            <div className="task-content">
-              <h3>{task.title}</h3>
-              <p>{task.content}</p>
-            </div>
-            <div className="task-buttons">
-              <button onClick={() => handleEdit(task.id)}>Edit</button>
-              <button onClick={() => handleDelete(task.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <form onSubmit={handleAddTask}>
+        <input
+          type="text"
+          placeholder="Input title"
+          value={newTask.title}
+          onChange={(e) => {
+            setNewTask((prev) => ({ ...prev, title: e.target.value }));
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Input content"
+          value={newTask.content}
+          onChange={(e) => {
+            setNewTask((prev) => ({ ...prev, content: e.target.value }));
+          }}
+        />
+        <button type="submit" className="btn-outline">
+          Confirm
+        </button>
+      </form>
 
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>Add New Task</h2>
-            <form onSubmit={handleAddTask}>
-              <input
-                type="text"
-                placeholder="Task Title"
-                value={newTask.title}
-                onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                required
-              />
-              <textarea
-                placeholder="Task Content"
-                value={newTask.content}
-                onChange={(e) => setNewTask({ ...newTask, content: e.target.value })}
-                required
-              />
-              <div className="modal-buttons">
-                <button type="button" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button type="submit">Add Task</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
+      <ul>
+        <h1>This is Task List</h1>
+        {tasks
+          .filter((task) => {
+            if (category === "All") return task;
+            return task.status === category;
+          })
+          .filter((task) => {
+            if (searchQuery === "") return task;
+            return task.title.toLowerCase().includes(searchQuery.toLowerCase());
+          })
+          .map((task) => (
+            <TaskItem
+              key={task.id}
+              task={task}
+              handleTaskUpdate={handleTaskUpdate}
+              handleTaskDelete={handleTaskDelete}
+            />
+          ))}
+      </ul>
+    </>
   );
 }
+
+const TaskItem = ({ task, handleTaskUpdate, handleTaskDelete }) => {
+  const [checked, setChecked] = useState(false);
+
+  const handleTaskCheck = (id) => {
+    setChecked((prev) => {
+      handleTaskUpdate({ ...task, status: !prev });
+      return !prev;
+    });
+  };
+
+  return (
+    <li style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+      <p>Title: {task.title}</p>
+      <p>Content: {task.content}</p>
+      <p>Status: {task.status ? "Finished" : "Pending"}</p>
+      <input
+        type="checkbox"
+        checked={task.status}
+        onChange={() => handleTaskCheck(task.id)}
+      />
+      <button className="btn-outline" onClick={() => handleTaskDelete(task.id)}>
+        Delete
+      </button>
+    </li>
+  );
+};

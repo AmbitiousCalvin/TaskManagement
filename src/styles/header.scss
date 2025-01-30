@@ -1,7 +1,7 @@
 @import "variables";
 @import "styles";
 
-header {
+.header {
   position: sticky;
   top: 0;
   display: flex;
@@ -20,7 +20,7 @@ header {
   }
 }
 
-header section {
+.header section {
   @include flex_center(center, flex-end);
   flex: 1;
   gap: 1.25rem;
@@ -91,34 +91,38 @@ header section {
 }
 
 @media screen and (max-width: 600px) {
-  .search-bar-container {
-    display: none;
-  }
+  .header {
+    .search-bar-container {
+      display: none;
 
-  .search-bar-container.show {
-    display: flex !important;
-    flex: 1;
+      &.show {
+        display: flex !important;
+        flex: 1;
 
-    & .search-bar {
-      flex: 1;
+        .search-bar {
+          flex: 1;
+        }
+      }
     }
-  }
 
-  header:has(.show) section {
-    margin: 0;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-  }
+    &:has(.show) {
+      section {
+        margin: 0;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+      }
 
-  header:has(.show) .logo-container,
-  header:has(.show) .menu-icon,
-  header:has(.show) .theme-icon {
-    display: none;
-  }
+      .logo-container,
+      .menu-icon,
+      .theme-icon {
+        display: none;
+      }
+    }
 
-  .icon-btn.search-toggle-icon,
-  .icon-btn.close-search-icon,
-  .icon-btn.voice-search-icon {
-    display: flex;
+    .icon-btn.search-toggle-icon,
+    .icon-btn.close-search-icon,
+    .icon-btn.voice-search-icon {
+      display: flex;
+    }
   }
 }

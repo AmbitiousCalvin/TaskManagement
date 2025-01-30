@@ -23,6 +23,7 @@ export default function App() {
 
           <section className="content-container">
             <Routes>
+              <Route path="/" element={<TaskPage />} />
               <Route path="/tasks" element={<TaskPage />} />
             </Routes>
           </section>
