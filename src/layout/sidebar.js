@@ -58,53 +58,28 @@ const NAVIGATION = [
 const Section = memo(
   ({ header, items, handleClick, activeIndex, sectionIndex }) => {
     return (
-      <section
-        className="sidebar-section"
-        aria-labelledby={`section-${sectionIndex}`}
-      >
-        <div
-          id={`section-${sectionIndex}`}
-          className="section-header"
-          role="heading"
-          aria-level="2"
-        >
-          {header}
-        </div>
-        <ul className="section-items" role="list">
+      <div className="sidebar-section">
+        <div className="section-header">{header}</div>
+        <ul className="section-items">
           {items?.map((item, itemIndex) => {
             const uniqueIndex = `${sectionIndex}-${itemIndex}`; // Generate unique index
             return (
-              <li
+              <Link
+                to={item.path}
                 key={uniqueIndex}
-                role="listitem"
-                aria-selected={activeIndex === uniqueIndex ? "true" : "false"}
+                title={item.tooltip}
+                className={`section-item ${
+                  activeIndex === uniqueIndex ? "active" : ""
+                }`}
+                onClick={() => handleClick(uniqueIndex)}
               >
-                <Link
-                  to={item.path}
-                  title={item.tooltip}
-                  className={`section-item ${
-                    activeIndex === uniqueIndex ? "active" : ""
-                  }`}
-                  onClick={() => handleClick(uniqueIndex)}
-                  role="link"
-                  aria-label={item.tooltip} // Provides description on hover/focus
-                >
-                  <div
-                    className="section-item__icon"
-                    role="img"
-                    aria-label={item.title}
-                  >
-                    {item.icon}
-                  </div>
-                  <div className="section-item__title">{item.title}</div>
-
-                  <span className="section-item__tooltip">{item.tooltip}</span>
-                </Link>
-              </li>
+                <div className="section-item__icon">{item.icon}</div>
+                <div className="section-item__title">{item.title}</div>
+              </Link>
             );
           })}
         </ul>
-      </section>
+      </div>
     );
   }
 );
@@ -138,11 +113,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <nav
-        className={classes.join(" ")}
-        role="navigation"
-        aria-label="Sidebar navigation"
-      >
+      <div className={classes.join(" ")}>
         {NAVIGATION.map((section, sectionIndex) => (
           <Section
             key={sectionIndex}
@@ -154,18 +125,15 @@ const Sidebar = () => {
           />
         ))}
 
-        <footer className="sidebar-footer" role="contentinfo">
+        <div className="sidebar-footer">
           <p>
             &copy; {new Date().getFullYear()} CalvinTaw. All rights reserved.
           </p>
-        </footer>
-      </nav>
+        </div>
+      </div>
       <div
         onClick={() => handleClickInside()}
         className="sidebar-overlay"
-        role="button"
-        aria-label="Close sidebar overlay"
-        tabIndex="0"
       ></div>
     </>
   );

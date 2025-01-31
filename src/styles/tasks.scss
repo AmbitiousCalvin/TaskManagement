@@ -13,10 +13,10 @@
     width: 100%;
     @include flex_center(row, space-between);
     gap: 2rem;
-
-    .task-header__btns {
-      @include flex_center(row, flex-start);
-      gap: 1rem;
-    }
   }
+}
+
+.__btns-container {
+  @include flex_center(row, flex-start);
+  gap: 1rem;
 }

@@ -71,13 +71,12 @@
 }
 
 .section-item {
-  position: relative;
   gap: 0.5rem;
   @include flex_center(row, flex-start);
   color: rgb(var(--gray-50));
   border-radius: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: rgb(var(--gray-800));
@@ -99,30 +98,6 @@
   &.active:active {
     background-color: $indigo-800;
   }
-
-  .section-item__tooltip {
-    position: absolute;
-    top: 50%;
-    left: 120%;
-    transform: translateY(-50%) rotate(15deg);
-    transform-origin: left;
-    background-color: rgba(0, 0, 0, 0.85);
-    color: #fff;
-    padding: 1rem;
-    font-size: 1.5rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s, transform 0.3s;
-    white-space: nowrap;
-  }
-
-  &:hover .section-item__tooltip {
-    opacity: 1;
-    transform: translateY(-50%) rotate(0deg);
-    pointer-events: auto;
-  }
 }
 
 .section-item__icon {
@@ -141,6 +116,7 @@
   font-size: 1.4rem;
   white-space: nowrap;
   overflow: hidden;
+  // display: none;
 }
 
 .sidebar-footer {
@@ -156,8 +132,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(var(--gray-200), 0.5);
-  backdrop-filter: blur(2px);
+  background-color: rgba(var(--gray-200), 0.2);
+  backdrop-filter: blur(1px);
   opacity: 0;
   pointer-events: none;
   visibility: hidden;

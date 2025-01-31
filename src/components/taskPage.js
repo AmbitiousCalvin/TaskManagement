@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocalStorage } from "../hooks/useStorage";
 import useToggle from "../hooks/useToggle";
-import ModalForm from "./ModalForm";
-import "../styles/tasks.scss";
 
 export function TaskPage() {
   const [tasks, setTasks] = useLocalStorage("items", []);
@@ -10,7 +8,6 @@ export function TaskPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showModal, setShowModal] = useToggle(false);
   const [newTask, setNewTask] = useState({ title: "", content: "" });
-  const [open, toggleOpen] = useToggle(false);
 
   const handleTaskUpdate = (newTask) => {
     setTasks((prevTasks) => {
@@ -22,7 +19,8 @@ export function TaskPage() {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = (e) => {
+    e.preventDefault();
     setTasks((prevTasks) => {
       return [
         ...prevTasks,
@@ -35,50 +33,57 @@ export function TaskPage() {
   return (
     <>
       <h1>Task Page</h1>
-      <header className="task-header">
-        <section>
-          <div className="task-header__btns">
-            <button className="btn" onClick={() => setCategory("All")}>
-              All
-            </button>
-            <button className="btn-amber" onClick={() => setCategory(false)}>
-              Pending
-            </button>
-            <button className="btn-green" onClick={() => setCategory(true)}>
-              Finished
-            </button>
-          </div>
-        </section>
-        <section>
-          <form className="search-bar-container">
-            <input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              type="text"
-              placeholder="Filter tasks..."
-              className="search-bar"
-            />
-            <i className="fa fa-search icon-btn"></i>
-          </form>
-          <div className="task-header__btns">
-            <button className="btn btn-add-task">Add Task</button>
-            <button
-              className="btn-outline btn-open-modal"
-              onClick={() => toggleOpen(true)}
-            >
-              Open Modal
-            </button>
-          </div>
-        </section>
+      <header>
+        <button className="btn" onClick={() => setCategory("All")}>
+          All
+        </button>
+        <button
+          className="btn btn-orange-outline"
+          onClick={() => setCategory(false)}
+        >
+          Pending
+        </button>
+        <button
+          className="btn btn-green-outline"
+          onClick={() => setCategory(true)}
+        >
+          Finished
+        </button>
+        <form className={`search-bar-container`}>
+          <input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            type="text"
+            placeholder="Filter tasks..."
+            className="search-bar"
+          />
+          <i className="fa fa-search icon-btn"></i>
+        </form>
+        <button className="btn">Add Task</button>
       </header>
 
-      <ModalForm
-        open={open}
-        onClose={() => toggleOpen(false)}
-        handleAddTask={handleAddTask}
-        newTask={newTask}
-        setNewTask={setNewTask}
-      />
+      <form onSubmit={handleAddTask}>
+        <input
+          type="text"
+          placeholder="Input title"
+          value={newTask.title}
+          onChange={(e) => {
+            setNewTask((prev) => ({ ...prev, title: e.target.value }));
+          }}
+        />
+        <input
+          type="text"
+          placeholder="Input content"
+          value={newTask.content}
+          onChange={(e) => {
+            setNewTask((prev) => ({ ...prev, content: e.target.value }));
+          }}
+        />
+        <button type="submit" className="btn-outline">
+          Confirm
+        </button>
+      </form>
+
       <ul>
         <h1>This is Task List</h1>
         {tasks
@@ -104,8 +109,13 @@ export function TaskPage() {
 }
 
 const TaskItem = ({ task, handleTaskUpdate, handleTaskDelete }) => {
-  const handleTaskCheck = () => {
-    handleTaskUpdate({ ...task, status: !task.status });
+  const [checked, setChecked] = useState(false);
+
+  const handleTaskCheck = (id) => {
+    setChecked((prev) => {
+      handleTaskUpdate({ ...task, status: !prev });
+      return !prev;
+    });
   };
 
   return (
@@ -113,7 +123,11 @@ const TaskItem = ({ task, handleTaskUpdate, handleTaskDelete }) => {
       <p>Title: {task.title}</p>
       <p>Content: {task.content}</p>
       <p>Status: {task.status ? "Finished" : "Pending"}</p>
-      <input type="checkbox" checked={task.status} onChange={handleTaskCheck} />
+      <input
+        type="checkbox"
+        checked={task.status}
+        onChange={() => handleTaskCheck(task.id)}
+      />
       <button className="btn-outline" onClick={() => handleTaskDelete(task.id)}>
         Delete
       </button>
