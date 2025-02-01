@@ -17,7 +17,12 @@
   padding: 0.75rem;
   transition: width 0.5s, transform 0.45s;
 
-  @media screen and (min-width: 601px) {
+  & .default__tooltip-container:hover .default__tooltip {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media screen and (min-width: 711px) {
     &.mini {
       transform: translateY(-2rem);
       width: 6rem;
@@ -107,24 +112,6 @@
   }
 }
 
-.default__tooltip {
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 1rem);
-  transform: translateY(-50%) rotate(15deg);
-  transform-origin: left;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  padding: 1rem;
-  font-size: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s, transform 0.25s;
-  white-space: nowrap;
-}
-
 .section-item__icon {
   @include flex_center;
   background-color: transparent;
@@ -162,10 +149,10 @@
   pointer-events: none;
   visibility: hidden;
   z-index: -1000;
-  transition: opacity 0.5s;
+  transition: opacity 0.2s;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 710px) {
   body:has(.sidebar.mini_mobile) .page-overlay {
     opacity: 1;
     visibility: visible;
@@ -174,9 +161,9 @@
   }
 
   .sidebar {
+    width: 20rem;
     position: fixed;
     transform: translateX(-100%);
-    width: 6rem;
     transition: none;
 
     &.mini_mobile {

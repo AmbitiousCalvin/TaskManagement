@@ -9,6 +9,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { useLayoutContext } from "../contexts/layoutContext";
+import { Tooltip } from "../components/utils";
 
 const NAVIGATION = [
   {
@@ -75,17 +76,20 @@ const Section = memo(
             const uniqueIndex = `${sectionIndex}-${itemIndex}`; // Generate unique index
             return (
               <li
+                tabindex="0"
                 key={uniqueIndex}
                 role="listitem"
                 aria-selected={activeIndex === uniqueIndex ? "true" : "false"}
               >
-                <Link
-                  to={item.path}
+                <div
+                  // to={item.path}
                   title={item.tooltip}
                   className={`section-item default__tooltip-container ${
                     activeIndex === uniqueIndex ? "active" : ""
                   }`}
-                  onClick={() => handleClick(uniqueIndex)}
+                  onClick={() => {
+                    handleClick(uniqueIndex);
+                  }}
                   role="link"
                   aria-label={item.tooltip} // Provides description on hover/focus
                 >
@@ -98,8 +102,8 @@ const Section = memo(
                   </div>
                   <div className="section-item__title">{item.title}</div>
 
-                  <span className="default__tooltip">{item.tooltip}</span>
-                </Link>
+                  <Tooltip>{item.tooltip}</Tooltip>
+                </div>
               </li>
             );
           })}

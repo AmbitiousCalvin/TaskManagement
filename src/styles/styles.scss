@@ -7,6 +7,11 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+
+::-webkit-progress-value {
+  transition: width 1s;
+}
+
 :root {
   --gray-50: 0, 0, 0;
   --gray-100: 50, 50, 50;
@@ -88,6 +93,7 @@ html {
 
 @mixin btn_default($theme: $indigo-700) {
   @include flex_center(row, flex-start);
+  outline: none;
   border: 0.1rem solid transparent;
   width: fit-content;
   max-height: 4.3rem;
@@ -105,7 +111,6 @@ html {
   }
 
   &:active {
-    outline: none;
     background-color: rgba($theme, 0.7);
   }
 
@@ -134,7 +139,6 @@ html {
 
 @mixin icon_default() {
   @include flex_center;
-  outline: none;
   border: none;
   font-size: 1.8rem;
   width: 4rem;
@@ -253,6 +257,59 @@ html {
   @include flex_center;
 }
 
+.all-btn {
+  @include btn_outline($indigo-700);
+}
+
+.pending-btn {
+  @include btn_default($amber-525);
+}
+
+.finished-btn {
+  @include btn_default($green-600);
+}
+
+.default__tooltip-container {
+  position: relative;
+
+  &:hover .default__tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) rotate(0deg);
+    pointer-events: auto;
+  }
+}
+
+.default__tooltip {
+  height: min-content;
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1rem);
+  transform: translateY(-50%) rotate(15deg);
+  transform-origin: left;
+  background-color: rgba(0, 0, 0, 0.85);
+  font-size: 1.5rem;
+  padding: 1rem;
+  color: #fff;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.btn__small {
+  font-size: 1.4rem !important;
+  padding: 0.25rem 1rem 0.25rem 0.5rem !important;
+
+  & svg {
+    width: 1.5rem !important;
+    height: 1.5em !important;
+  }
+}
+
 .rounded-pill {
   border-radius: 2.5rem;
 }
@@ -282,129 +339,5 @@ html {
 
   .content-container {
     padding: 1rem;
-  }
-}
-
-.default__tooltip-container {
-  position: relative;
-
-  &:hover .default__tooltip {
-    opacity: 1;
-    transform: translateY(-50%) rotate(0deg);
-    pointer-events: auto;
-  }
-}
-
-.default__tooltip {
-  position: absolute;
-  top: 50%;
-  left: calc(100% + 1rem);
-  transform: translateY(-50%) rotate(15deg);
-  transform-origin: left;
-  background-color: rgba(0, 0, 0, 0.85);
-  color: #fff;
-  padding: 1rem;
-  font-size: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s, transform 0.25s;
-  white-space: nowrap;
-}
-
-.form-container {
-  position: fixed;
-  background-color: rgb(var(--gray-900));
-  padding-block: 2rem;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  border-radius: 1rem;
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.75);
-  z-index: 3100;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(20rem, 95%, 50rem);
-  @include flex_center(column);
-  max-height: 80vh;
-  overflow: hidden;
-
-  & .__btns-container {
-    padding: 0 1.5rem;
-    background-color: rgb(var(--gray-900));
-    border-top: 0.1rem solid rgb(var(--gray-700));
-    padding-top: 1rem;
-    position: sticky;
-    bottom: 0;
-  }
-}
-
-body:has(.form-container) .modal-overlay {
-  opacity: 1;
-  visibility: visible;
-  z-index: 3000;
-  pointer-events: auto;
-}
-
-.form-body {
-  padding: 0 2rem !important;
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 0;
-  }
-
-  & .form-title {
-    margin-bottom: 2rem;
-  }
-}
-.input-group {
-  @include flex_center(column, flex-start);
-  width: 100%;
-  gap: 0.5rem;
-  background-color: rgb(var(--gray-900));
-  margin-block: 1.5rem;
-  border-radius: 0;
-  padding: 0;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgb(var(--gray-700));
-
-  textarea {
-    min-height: 6rem;
-    margin-top: 0.75rem;
-    border: none;
-    width: 100%;
-    font-size: 1.6rem;
-    border-radius: 0.25rem;
-    background-color: transparent;
-    color: rgb(var(--gray-50));
-    font-weight: 400;
-    transition: border-color 0.15s;
-    resize: none;
-    overflow: hidden;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  & textarea:focus-within::placeholder {
-    color: rgb(var(--gray-500));
-  }
-
-  & textarea::placeholder {
-    color: rgb(var(--gray-400));
-    font-weight: 500;
-    transition: color 0.15s;
-  }
-
-  label {
-    width: 100%;
-    font-size: 1.75rem;
-    color: rgb(var(--gray-200));
-    font-weight: 500;
-    display: block;
-    text-align: left;
   }
 }

@@ -23,6 +23,7 @@ export { memoizedHeader as Header };
 const LogoContainer = memo(function ({ brand, brandIcon }) {
   return (
     <div
+      tabIndex="1"
       className="logo-container"
       role="img"
       aria-label={brand ?? "Dashboard"}

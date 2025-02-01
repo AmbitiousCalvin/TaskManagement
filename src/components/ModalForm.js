@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import "../styles/modalForm.scss";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { PriorityButton, DropdownList, DropdownItem } from "./utils";
 
 function ModalForm({ open, onClose, handleAddTask, newTask = {}, setNewTask }) {
   const titleRef = useRef(null);
@@ -6,7 +9,7 @@ function ModalForm({ open, onClose, handleAddTask, newTask = {}, setNewTask }) {
 
   useEffect(() => {
     if (open) {
-      titleRef.current.focus();
+      titleRef.current?.focus();
     }
   }, [open]);
 
@@ -26,6 +29,10 @@ function ModalForm({ open, onClose, handleAddTask, newTask = {}, setNewTask }) {
     }
   };
 
+  const handleTaskPriority = (value) => {
+    setNewTask((prev) => ({ ...prev, priority: value }));
+  };
+
   return (
     <>
       <form
@@ -37,9 +44,28 @@ function ModalForm({ open, onClose, handleAddTask, newTask = {}, setNewTask }) {
         }}
       >
         <section className="form-body" style={{ width: "100%" }}>
-          <h1 className="form-title">
-            {newTask.type === "edit" ? "Update Your Task" : "Add a New Task"}
-          </h1>
+          <div className="default-title__container">
+            <h1 className="form-title">
+              {newTask.type === "edit" ? "Update Your Task" : "Add a New Task"}
+            </h1>
+
+            <PriorityButton className={`${newTask.priority}-btn`}>
+              <FiberManualRecordIcon />
+              {newTask.priority.toUpperCase()}
+              <DropdownList>
+                <DropdownItem onClick={() => handleTaskPriority("high")}>
+                  High
+                </DropdownItem>
+                <DropdownItem onClick={() => handleTaskPriority("low")}>
+                  Low
+                </DropdownItem>
+                <DropdownItem onClick={() => handleTaskPriority("medium")}>
+                  Medium
+                </DropdownItem>
+              </DropdownList>
+            </PriorityButton>
+          </div>
+
           <div className="input-group">
             <label htmlFor="title-input">
               <h1>Title:</h1>

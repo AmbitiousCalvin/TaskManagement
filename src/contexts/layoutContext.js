@@ -1,6 +1,13 @@
 import useToggle from "../hooks/useToggle";
 import { useLocalStorage } from "../hooks/useStorage";
-import { useCallback, useState, useEffect, createContext, useContext } from "react";
+import {
+  useCallback,
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  useTransition,
+} from "react";
 import { useWindowSize } from "../hooks/useWindowSize";
 
 const layoutContext = createContext(null);
@@ -16,7 +23,10 @@ export function useLayoutContext() {
 }
 
 export function LayoutContextProvider(props) {
-  const [isMiniMode, setIsMiniMode] = useLocalStorage("desktop_sidebar_mini", "true");
+  const [isMiniMode, setIsMiniMode] = useLocalStorage(
+    "desktop_sidebar_mini",
+    "true"
+  );
 
   const [isMobileMiniMode, toggleMobileMiniMode] = useToggle(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -35,12 +45,12 @@ export function LayoutContextProvider(props) {
   );
 
   useEffect(() => {
-    if (size.width <= 600 && !isMobile) {
-      console.log(isMobile, "isMobile < 600");
+    if (size.width <= 710 && !isMobile) {
+      console.log(isMobile, "isMobile < 710");
       setIsMobile(true);
     }
-    if (size.width > 600 && isMobile) {
-      console.log(isMobile, "isMobile >600");
+    if (size.width > 710 && isMobile) {
+      console.log(isMobile, "isMobile >710");
       setIsMobile(false);
     }
   }, [size.width]);
