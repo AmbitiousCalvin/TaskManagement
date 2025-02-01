@@ -1,22 +1,203 @@
 @import "variables";
 @import "styles";
 
+.light-text {
+  font-size: 3rem;
+  color: rgb(var(--gray-350));
+}
+
+.all-btn {
+  @include btn_outline($indigo-700);
+}
+
+.pending-btn {
+  @include btn_default($amber-500);
+}
+
+.finished-btn {
+  @include btn_default($green-600);
+}
+
+.success-btn {
+  @include icon_default;
+  width: 3.5rem;
+  height: 3.5rem;
+  color: #fff;
+  & svg {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  background-color: $green-600;
+
+  &:hover {
+    background-color: $green-500;
+  }
+
+  &:active {
+    background-color: $green-400;
+  }
+}
+
+.dropdown-btn {
+  position: relative;
+
+  &:hover .dropdown-list {
+    opacity: 1;
+    visibility: visible;
+    z-index: 1000;
+  }
+}
+
+.dropdown-btn-css {
+  position: relative;
+
+  & input:checked ~ .dropdown-list {
+    opacity: 1;
+    visibility: visible;
+    z-index: 1000;
+  }
+
+  & .dropdown-list {
+    left: var(--left);
+  }
+}
+
+.dropdown-list {
+  opacity: 0;
+  visibility: hidden;
+  z-index: -1000;
+  min-width: 100%;
+  position: absolute;
+  top: calc(100% + 1rem);
+  left: 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  @include flex_center(column);
+  align-items: flex-start;
+  background-color: $gray-800;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.75);
+  transition: all 0.15s;
+}
+
+.dropdown-list__item {
+  min-width: 100%;
+  text-align: center;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  font-size: 1.6rem;
+  transition: all 0.25s;
+
+  &:hover {
+    background-color: $gray-900;
+  }
+}
+
 .task-header {
+  z-index: 2000;
+  position: sticky;
+  top: calc(7rem);
+  background-color: rgb(var(--gray-900));
+  left: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 0.1rem solid #ddd;
+  padding: 1rem 0 1.5rem;
+  border-bottom: 0.1rem solid rgb(var(--gray-700));
 
   section {
     width: 100%;
     @include flex_center(row, space-between);
     gap: 2rem;
+
+    &:first-child {
+      flex-wrap: wrap;
+    }
   }
 }
 
 .__btns-container {
   @include flex_center(row, flex-start);
   gap: 1rem;
+}
+
+.task-list-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+  gap: 1rem;
+  padding-bottom: 5rem;
+}
+
+.task-item {
+  height: min-content;
+  @include flex_center(column, center);
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: rgb(var(--gray-850));
+
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  border: 0.1rem solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 1.5rem;
+  color: rgb(var(--gray-50));
+
+  &:hover {
+    border-color: rgb(var(--gray-600));
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.15),
+      -1px -1px 1px rgba(0, 0, 0, 0.15);
+  }
+
+  & section {
+    @include flex_center;
+    gap: 1rem;
+  }
+
+  & .__btns-container {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+.task-item__header {
+  display: flex;
+  justify-content: flex-start !important;
+  align-items: center;
+  width: 100%;
+  text-align: left !important;
+  overflow: clip;
+  padding: 1rem;
+  padding-right: 1.5rem;
+  min-height: 4.3rem;
+  border-radius: 0.5rem;
+}
+
+.task-title {
+  min-height: 4rem;
+  font-size: 1.7rem;
+  font-weight: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Checkbox Styling */
+.task-checkbox {
+  background-color: rgb(var(--gray-900));
+  margin-right: 0.5rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  cursor: pointer;
+  accent-color: $green-600;
+  display: none;
+}
+
+.progress-bar {
+  width: 100%;
+  padding: 2rem;
+  transition: all 0.25s;
 }

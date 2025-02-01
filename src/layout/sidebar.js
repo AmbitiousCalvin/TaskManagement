@@ -3,8 +3,8 @@ import "../styles/sidebar.scss";
 import { useEffect, memo, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useStorage";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import TaskIcon from "@mui/icons-material/Task";
+import LocalAtmOutlinedIcon from "@mui/icons-material/LocalAtmOutlined";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -16,13 +16,13 @@ const NAVIGATION = [
     items: [
       {
         title: "Tasks",
-        icon: <TaskIcon fontSize="large" />,
+        icon: <ListAltOutlinedIcon fontSize="large" />,
         path: "/tasks",
         tooltip: "Manage your tasks", // Added tooltip
       },
       {
         title: "View Budgets",
-        icon: <AccountBalanceIcon fontSize="large" />,
+        icon: <LocalAtmOutlinedIcon fontSize="large" />,
         path: "/budgets",
         tooltip: "Check and manage your budgets", // Added tooltip
       },
@@ -58,28 +58,53 @@ const NAVIGATION = [
 const Section = memo(
   ({ header, items, handleClick, activeIndex, sectionIndex }) => {
     return (
-      <div className="sidebar-section">
-        <div className="section-header">{header}</div>
-        <ul className="section-items">
+      <section
+        className="sidebar-section"
+        aria-labelledby={`section-${sectionIndex}`}
+      >
+        <div
+          id={`section-${sectionIndex}`}
+          className="section-header"
+          role="heading"
+          aria-level="2"
+        >
+          {header}
+        </div>
+        <ul className="section-items" role="list">
           {items?.map((item, itemIndex) => {
             const uniqueIndex = `${sectionIndex}-${itemIndex}`; // Generate unique index
             return (
-              <Link
-                to={item.path}
+              <li
                 key={uniqueIndex}
-                title={item.tooltip}
-                className={`section-item ${
-                  activeIndex === uniqueIndex ? "active" : ""
-                }`}
-                onClick={() => handleClick(uniqueIndex)}
+                role="listitem"
+                aria-selected={activeIndex === uniqueIndex ? "true" : "false"}
               >
-                <div className="section-item__icon">{item.icon}</div>
-                <div className="section-item__title">{item.title}</div>
-              </Link>
+                <Link
+                  to={item.path}
+                  title={item.tooltip}
+                  className={`section-item default__tooltip-container ${
+                    activeIndex === uniqueIndex ? "active" : ""
+                  }`}
+                  onClick={() => handleClick(uniqueIndex)}
+                  role="link"
+                  aria-label={item.tooltip} // Provides description on hover/focus
+                >
+                  <div
+                    className="section-item__icon"
+                    role="img"
+                    aria-label={item.title}
+                  >
+                    {item.icon}
+                  </div>
+                  <div className="section-item__title">{item.title}</div>
+
+                  <span className="default__tooltip">{item.tooltip}</span>
+                </Link>
+              </li>
             );
           })}
         </ul>
-      </div>
+      </section>
     );
   }
 );
@@ -113,7 +138,11 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className={classes.join(" ")}>
+      <nav
+        className={classes.join(" ")}
+        role="navigation"
+        aria-label="Sidebar navigation"
+      >
         {NAVIGATION.map((section, sectionIndex) => (
           <Section
             key={sectionIndex}
@@ -125,15 +154,18 @@ const Sidebar = () => {
           />
         ))}
 
-        <div className="sidebar-footer">
+        <footer className="sidebar-footer" role="contentinfo">
           <p>
             &copy; {new Date().getFullYear()} CalvinTaw. All rights reserved.
           </p>
-        </div>
-      </div>
+        </footer>
+      </nav>
       <div
         onClick={() => handleClickInside()}
-        className="sidebar-overlay"
+        className="page-overlay"
+        role="button"
+        aria-label="Close sidebar overlay"
+        tabIndex="0"
       ></div>
     </>
   );
