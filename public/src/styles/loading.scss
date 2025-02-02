@@ -1,0 +1,43 @@
+@import "styles";
+
+.loading-container {
+  @include flex_center;
+  height: 100%;
+  gap: 0.8rem;
+  z-index: 2700;
+  background-color: rgb(var(--gray-900));
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.dot {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: rgb(var(--gray-100));
+  animation: bounce 1.2s infinite ease-in-out;
+}
+
+.dot1 {
+  animation-delay: 0s;
+}
+
+.dot2 {
+  animation-delay: 0.2s;
+}
+
+.dot3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
