@@ -327,8 +327,8 @@ html {
   width: 100%;
   @include flex_center(column, flex-start);
   align-items: flex-start;
-  gap: 3rem;
   padding: 0 2rem 1rem;
+  gap: 1rem;
   transition: padding 0.25s, width 0.25s;
 }
 

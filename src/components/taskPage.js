@@ -12,7 +12,8 @@ import SortIcon from "@mui/icons-material/Sort";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import CheckIcon from "@mui/icons-material/Check";
 import { Tooltip, DropdownItem, DropdownList } from "./utils";
-import { ProgressBar } from "./ProgressBar";
+import Masonry from "@mui/lab/Masonry";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 export function TaskPage() {
   const [tasks, setTasks] = useLocalStorage("items", []);
@@ -84,9 +85,19 @@ export function TaskPage() {
     (task) => task.status === true
   ).length;
 
+  const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 750,
+        lg: 1100,
+        xl: 1536,
+      },
+    },
+  });
+
   return (
-    <>
-      {/* <h1>Task Page</h1> */}
+    <ThemeProvider theme={theme}>
       {open && (
         <ModalForm
           open={open}
@@ -97,16 +108,6 @@ export function TaskPage() {
         />
       )}
 
-      <ProgressBar
-        finishedTasksCount={finishedTasksCount}
-        totalTasks={tasks.length}
-      ></ProgressBar>
-      <h2>
-        {finishedTasksCount} out of {tasks.length} Done
-        <br />
-        {Math.floor((finishedTasksCount / tasks.length) * 100)}% Done
-      </h2>
-
       <TaskHeader
         category={category}
         searchQuery={searchQuery}
@@ -114,7 +115,28 @@ export function TaskPage() {
         setSearchQuery={setSearchQuery}
         toggleOpen={(val) => toggleOpen(val)}
       />
-      <ul className="task-list-container">
+
+      <div className="progress-text-container">
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <span className="progress-text__percent">
+            {Math.floor((finishedTasksCount / tasks.length) * 100)}% DONE
+          </span>
+          <span className="progress-text__default">
+            {finishedTasksCount} out of {tasks.length} Done
+          </span>
+        </div>
+        {finishedTasksCount === tasks.length && <h1>Congratulations!</h1>}
+      </div>
+
+      <Masonry
+        sequential
+        columns={{
+          xs: 1,
+          sm: 2,
+          lg: 3,
+        }}
+        spacing={2}
+      >
         {filteredTasks.map((task) => (
           <TaskItem
             key={task.id}
@@ -126,8 +148,8 @@ export function TaskPage() {
           />
         ))}
         {filteredTasks.length === 0 && <h1>Task not found...</h1>}
-      </ul>
-    </>
+      </Masonry>
+    </ThemeProvider>
   );
 }
 

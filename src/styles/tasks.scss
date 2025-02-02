@@ -15,6 +15,7 @@
     bottom: calc(100% + 0.5rem);
     left: -8%;
     font-size: 1.2rem;
+    color: rgb(var(--gray-250));
   }
 
   &.high-btn {
@@ -96,6 +97,7 @@
   grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
   gap: 1rem;
   padding-bottom: 5rem;
+  margin-top: 2rem;
 }
 
 .task-header {
@@ -193,6 +195,7 @@
 }
 
 .task-title {
+  margin-top: 0.5rem;
   width: 100%;
   font-size: 1.7rem;
   font-weight: normal;
@@ -219,4 +222,18 @@
   width: 100%;
   padding: 2rem;
   transition: all 0.25s;
+}
+
+.progress-text-container {
+  @include flex_center;
+  position: relative;
+  gap: 1rem;
+  font-size: 1.35rem;
+  .progress-text__percent {
+    color: #fff;
+    // border: 0.1rem dashed $green-600;
+    background-color: $green-600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+  }
 }
