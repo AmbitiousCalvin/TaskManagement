@@ -112,7 +112,7 @@
   margin-top: 2rem;
 
   &:has(.content-not-found-container) {
-    @include flex_center;
+    @include flex_center();
   }
 }
 
@@ -295,6 +295,8 @@
 .content-not-found-container {
   width: clamp(15rem, 95%, 40rem);
   min-height: 25rem;
+  position: relative;
+  top: -4rem;
   background-color: rgb(var(--gray-800));
   border-radius: 2rem;
   @include flex_center(column);

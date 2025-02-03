@@ -14,6 +14,63 @@ import CheckIcon from "@mui/icons-material/Check";
 import SearchIcon from "@mui/icons-material/Search";
 import { Tooltip, DropdownItem, DropdownList } from "./utils";
 
+const exampleData = [
+  {
+    type: "read",
+    id: crypto.randomUUID(),
+    status: false,
+    title: "Quick Read on Tech Trends",
+    content:
+      "Stay updated with the latest trends in tech. Explore new gadgets and innovative ideas.",
+    priority: "high",
+  },
+  {
+    type: "read",
+    id: crypto.randomUUID(),
+    status: false,
+    title: "Important Project Brief",
+    content:
+      "Review the project brief carefully. Ensure the team is aligned with the goals and timeline.",
+    priority: "high",
+  },
+  {
+    type: "read",
+    id: crypto.randomUUID(),
+    status: false,
+    title: "Latest Market Analysis Report",
+    content:
+      "A detailed report analyzing the current state of the market. It includes future predictions and key data.",
+    priority: "medium",
+  },
+  {
+    type: "read",
+    id: crypto.randomUUID(),
+    status: false,
+    title: "Research on AI Advancements",
+    content:
+      "AI technologies are advancing rapidly. Learn about the key breakthroughs and their implications for industries.",
+    priority: "high",
+  },
+  {
+    type: "read",
+    id: crypto.randomUUID(),
+    status: false,
+    title: "Team Collaboration Tips",
+    content:
+      "Teamwork is key to success. Here are some tips on improving communication and collaboration within the team.",
+    priority: "medium",
+  },
+  {
+    type: "read",
+    id: crypto.randomUUID(),
+    status: false,
+    title: "Guidelines for Remote Work Efficiency",
+    content:
+      "Optimize your productivity while working from home. Set a clear schedule, minimize distractions, and prioritize tasks.",
+    priority: "low",
+  },
+];
+
 export function TaskPage() {
   const [tasks, setTasks] = useLocalStorage("items", []);
   const [category, setCategory] = useState("All");
@@ -92,12 +149,14 @@ export function TaskPage() {
   // Content For When There are no Tasks
   let contentNotFound = "";
   if (tasks.length === 0) {
-    if (searchQuery.trim()) {
-      contentNotFound = "Task not found...";
-    } else {
+    if (searchQuery.trim() || !searchQuery.trim()) {
       contentNotFound = "You haven't added any tasks yet.";
     }
   } else {
+    if (searchQuery.trim()) {
+      contentNotFound = `No succh task as ${searchQuery}`;
+    }
+
     if (category === true && tasks.length) {
       contentNotFound = "You haven't finished any tasks yet.";
     } else if (!category && tasks.length) {
