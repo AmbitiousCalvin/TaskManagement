@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { useLocalStorage } from "../hooks/useStorage";
 import useToggle from "../hooks/useToggle";
 import ModalForm from "./ModalForm";
@@ -81,6 +81,10 @@ export function TaskPage() {
     priority: "high",
   });
   const [open, toggleOpen] = useToggle(false);
+
+  useEffect(() => {
+    setTasks((prev) => [...prev, ...exampleData]);
+  }, []);
 
   const handleTaskUpdate = (newTask) => {
     setTasks((prevTasks) => {

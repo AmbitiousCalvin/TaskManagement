@@ -88,7 +88,11 @@ const HeaderSection = memo(function () {
       <LogoContainer />
 
       <section role="region" aria-labelledby="header-section">
-        <button className="btn" aria-label="Sign up">
+        <button
+          className="btn"
+          aria-label="Sign up"
+          onClick={() => alert("Signing In... :)")}
+        >
           Sign up
         </button>
 

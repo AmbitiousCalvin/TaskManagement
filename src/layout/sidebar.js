@@ -26,6 +26,7 @@ const NAVIGATION = [
         icon: <LocalAtmOutlinedIcon fontSize="large" />,
         path: "/budgets",
         tooltip: "Check and manage your budgets", // Added tooltip
+        action: () => alert("This would take you to the 'View Budgets' Page"), // Added action
       },
     ],
   },
@@ -37,18 +38,22 @@ const NAVIGATION = [
         icon: <MusicNoteIcon fontSize="large" />,
         path: "/music",
         tooltip: "Explore your music interests", // Added tooltip
+        action: () => alert("This would take you to the 'Music' Page"), // Added action
       },
       {
         title: "Cooking",
         icon: <RestaurantMenuIcon fontSize="large" />,
         path: "/cooking",
         tooltip: "Find and save cooking recipes", // Added tooltip
+        action: () => alert("This would take you to the 'Cooking' Page"), // Added action
       },
       {
         title: "GitHub Activity",
         icon: <GitHubIcon fontSize="large" />,
         path: "/github-activity",
         tooltip: "View your GitHub activity", // Added tooltip
+        action: () =>
+          alert("This would take you to the 'GitHub Activity' Page"), // Added action
       },
     ],
   },
@@ -76,6 +81,7 @@ const Section = memo(
             const uniqueIndex = `${sectionIndex}-${itemIndex}`; // Generate unique index
             return (
               <li
+                onClick={item.action}
                 tabindex="0"
                 key={uniqueIndex}
                 role="listitem"
