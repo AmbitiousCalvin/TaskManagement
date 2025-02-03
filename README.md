@@ -14,5 +14,6 @@ This project is a simple to-do list app, currently in its early stages. The goal
 ## Future Plans
 - Might come back to this when I am more competent
   
-## Conclusion
-I started this project to practice CRUD operations. It was tough at times, but I’ve learned a lot and look forward to improving as I build more.
+## Result of this project.
+I started this project to practice CRUD operations. It was tough at times and I made a lot of mistakes such as (unnecessary states, effects mutations, etc...), but I’ve learned a lot and look forward to improving as I build more.
+Also, this project pushed me to read the react docs which I should have done a lot sonner. 
