@@ -6,6 +6,18 @@
   color: rgb(var(--gray-350));
 }
 
+.btn-progress-btn {
+  position: relative;
+  &::after {
+    content: "Progress:";
+    position: absolute;
+    bottom: calc(100% + 0.5rem);
+    left: -8%;
+    font-size: 1.2rem;
+    color: rgb(var(--gray-250));
+  }
+}
+
 .priority-btn {
   @include btn_default($red-600);
   position: relative;
@@ -23,7 +35,7 @@
   }
 
   &.medium-btn {
-    @include btn_default($amber-600);
+    @include btn_default($amber-500);
   }
 
   &.low-btn {
@@ -98,6 +110,10 @@
   gap: 1rem;
   padding-bottom: 5rem;
   margin-top: 2rem;
+
+  &:has(.content-not-found-container) {
+    @include flex_center;
+  }
 }
 
 .task-header {
@@ -138,7 +154,7 @@
   @include flex_center(column, center);
   align-items: flex-end;
   gap: 1rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.75rem;
   border-radius: 0.75rem;
   background-color: rgb(var(--gray-850));
 
@@ -149,7 +165,8 @@
   color: rgb(var(--gray-50));
 
   &:hover {
-    border-color: rgb(var(--gray-600));
+    // border-color: rgb(var(--gray-600));
+    border-color: $indigo-600;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.15),
       -1px -1px 1px rgba(0, 0, 0, 0.15);
   }
@@ -162,6 +179,30 @@
   & .__btns-container {
     align-items: flex-start;
     gap: 0.5rem;
+  }
+
+  &::after {
+    content: "Click to see more";
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
+    transform: translate(-10%, 5%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 100;
+    pointer-events: none;
+    transition: all 0.2s;
+  }
+
+  position: relative;
+  &:has(.task-title:hover)::after {
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -201,22 +242,30 @@
   font-weight: normal;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
-  color: rgb(var(--gray-100));
-
-  &:hover {
-    color: rgb(var(--gray-50));
-  }
-}
-
-.task-description {
   color: rgb(var(--gray-300));
+  position: relative;
+  transition: all 0.2s;
+
   &:hover {
     color: rgb(var(--gray-50));
   }
 }
+
+// .task-description {
+//   overflow: hidden;
+//   display: -webkit-box;
+//   -webkit-line-clamp: 1;
+//   line-clamp: 1;
+//   -webkit-box-orient: vertical;
+//   color: rgb(var(--gray-300));
+
+//   &:hover {
+//     color: rgb(var(--gray-50));
+//   }
+// }
 
 .progress-bar {
   width: 100%;
@@ -225,15 +274,92 @@
 }
 
 .progress-text-container {
-  @include flex_center;
+  width: 100%;
+  @include flex_center(row, space-between);
   position: relative;
   gap: 1rem;
+  margin-bottom: 2rem;
   font-size: 1.35rem;
+  white-space: nowrap;
+
   .progress-text__percent {
+    min-width: 9rem;
     color: #fff;
     // border: 0.1rem dashed $green-600;
     background-color: $green-600;
     padding: 0.5rem 0.75rem;
     border-radius: 0.25rem;
   }
+}
+
+.content-not-found-container {
+  width: clamp(15rem, 95%, 40rem);
+  min-height: 25rem;
+  background-color: rgb(var(--gray-800));
+  border-radius: 2rem;
+  @include flex_center(column);
+  text-align: center;
+  font-size: 1.5rem;
+  color: rgb(var(--gray-200));
+  margin-top: 20px;
+  font-weight: 500;
+  gap: 3rem;
+
+  & svg {
+    width: 25%;
+    aspect-ratio: 1;
+    fill: rgb(var(--gray-200));
+  }
+}
+
+.custom-progress-bar-container {
+  width: clamp(5rem, 90%, 30rem);
+  height: 4.3rem;
+  background-color: rgb(var(--gray-800));
+  border-radius: 2.5rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  @include flex_center(row, flex-start);
+  padding: 0.5rem;
+}
+
+.custom-progress__value {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(45deg, $indigo-600, $green-500 70%);
+  width: var(--progress-value);
+  transition: width 0.6s, border-radius 0.3s;
+  border-radius: 2.5rem 0 0 2.5rem;
+
+  &.full {
+    border-radius: 2.5rem;
+  }
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: 0.5rem;
+    height: calc(100% + 0.35rem);
+    top: 50%;
+    left: calc(100% - 0.5rem);
+    transform: translateY(-50%);
+    background-color: $indigo-600;
+    border-radius: 2rem;
+    transition: all 0.35s;
+  }
+
+  &:is(.empty, .full)::after {
+    opacity: 0;
+  }
+}
+
+.percent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(var(--gray-50));
+  font-size: 1.75rem;
+  font-weight: bold;
 }

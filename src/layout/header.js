@@ -5,6 +5,8 @@ import useToggle from "../hooks/useToggle";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useLayoutContext } from "../contexts/layoutContext";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 function Header() {
   return (
@@ -28,7 +30,7 @@ const LogoContainer = memo(function ({ brand, brandIcon }) {
       role="img"
       aria-label={brand ?? "Dashboard"}
     >
-      {!brandIcon && <i className="fa-brands fa-sellsy" />}
+      {!brandIcon && <i className="fa-brands fa-sellsy"></i>}
       {brandIcon}
       <span className="brand-name">{brand ?? "Dashboard"}</span>
     </div>
@@ -95,8 +97,8 @@ const HeaderSection = memo(function () {
           onClick={() => setDarkMode(!darkMode)}
           aria-label="Toggle Dark Mode"
         >
-          {!darkMode && <i className="fa fa-moon"></i>}
-          {darkMode && <i className="fa fa-sun"></i>}
+          {!darkMode && <DarkModeIcon />}
+          {darkMode && <LightModeIcon />}
         </button>
       </section>
     </>

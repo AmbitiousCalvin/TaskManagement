@@ -4,6 +4,8 @@
 .form-container {
   position: fixed;
   background-color: rgb(var(--gray-900));
+  opacity: 0;
+  animation: fadeIn 0.35s forwards;
 
   padding-block: 2rem;
   padding-left: 0 !important;
@@ -16,7 +18,7 @@
   transform: translate(-50%, -50%);
   width: clamp(20rem, 95%, 50rem);
   @include flex_center(column);
-  max-height: 80vh;
+  max-height: 95vh;
   overflow: hidden;
 
   & .__btns-container {
@@ -29,8 +31,18 @@
   }
 }
 
+@keyframes fadeIn {
+  100% {
+    opacity: 1;
+  }
+}
+
+.modal-overlay {
+  transition: all 0.35s;
+  animation: fadeIn 0.35s forwards;
+}
+
 body:has(.form-container) .modal-overlay {
-  opacity: 1;
   visibility: visible;
   z-index: 3000;
   pointer-events: auto;
@@ -86,7 +98,7 @@ body:has(.form-container) .modal-overlay {
     }
   }
 
-  & #title-input {
+  &:has(#title-input) {
     border-bottom: 1px solid rgb(var(--gray-700));
   }
 

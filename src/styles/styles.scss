@@ -105,6 +105,7 @@ html {
   transition: background-color 0.15s, box-shadow 0.15s, color, 0.15s;
   cursor: pointer;
   gap: 0.5rem;
+  white-space: nowrap;
 
   &:hover {
     background-color: rgba($theme, 0.87);
